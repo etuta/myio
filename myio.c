@@ -39,18 +39,11 @@ myopen(char* filePath, int flags){
   //open file
   ptStruct->fileD = open(filePath,flags,0666);
   if(ptStruct->fileD == -1){
-    //printf("Cannot open file: %s \n", filePath);
-    //change name
-    // provide same facility as open
-    //return some value that indicates an error
     printf("\n");
     return ptStruct;
   }
-    // allocate memory
     printf("Open file %s\n", filePath);
     printf("\n");
-  // return a pointer to the newly created struct -> save it in the variable
-  // then send it to myread to read it.
   return ptStruct;
 }
 
@@ -59,11 +52,10 @@ struct file_info*
 myclose(struct file_info *file_close){
   // close file
   if(close(file_close->fileD)==-1){
-    //perror("close");
     printf("\n");
     return file_close;
   }
-    //free memory
+  //free memory
   printf("CLose File\n");
   free(file_close);
   printf("\n");
@@ -84,10 +76,10 @@ myread (struct file_info *file_read,char* buffer, size_t count){
     // content left in the buffer
     if(file_read->buf_offset > 0){
       int left = file_read->buf_size - file_read->buf_offset;
-      printf("left = %d\n",left);
+      //printf("left = %d\n",left);
       memcpy(buffer,file_read->buf + file_read->buf_offset,left);
       file_read->user_buf_offset += left;
-      printf("Left content put in user content = %s\n", buffer);
+      //printf("Left content put in user content = %s\n", buffer);
       count = count - left;
       file_read->bytes_read += left;
       file_read->buf_offset = 0;
@@ -95,7 +87,7 @@ myread (struct file_info *file_read,char* buffer, size_t count){
     //Section 2
     while(count > file_read->buf_size){
         check = read(file_read->fileD,file_read->buf,file_read->buf_size);
-        printf("in my buf during overflow = %s \n", file_read->buf);
+        //printf("in my buf during overflow = %s \n", file_read->buf);
         if(check == -1){
           printf("\n");
           return -1;
@@ -108,25 +100,20 @@ myread (struct file_info *file_read,char* buffer, size_t count){
           return file_read->bytes_read;
         }
 
-        memcpy(buffer+file_read->user_buf_offset,file_read->buf + file_read->buf_offset,file_read->buf_size);
-        file_read->user_buf_offset += file_read->buf_size;
-        printf("in user buf during overflow = %s \n", buffer);
-        count = count - file_read->buf_size;
-        //w++;
-        printf("out buf offset in while loop = %d \n",file_read->buf_offset);
-       printf("\n");
+      memcpy(buffer+file_read->user_buf_offset,file_read->buf + file_read->buf_offset,file_read->buf_size);
+      file_read->user_buf_offset += file_read->buf_size;
+        //printf("in user buf during overflow = %s \n", buffer);
+      count = count - file_read->buf_size;
+
+        //printf("out buf offset in while loop = %d \n",file_read->buf_offset);
+        //printf("\n");
     }
   }
   //Section 3
   if(file_read->buf_offset == 0){
-    // read
-    // and how are we going to enter the buffer
-    //printf(" our buffer pointer 3 = %p \n", file_read->buf);
-    //printf("This is, I guess, reading \n");
-    //printf("file discriptor read %d \n",file_read->fileD);
     check = read(file_read->fileD,file_read->buf,file_read->buf_size);
-    printf("in my buf in section 3 = %s \n", file_read->buf);
-    printf("check after read = %d\n", check);
+    //printf("in my buf in section 3 = %s \n", file_read->buf);
+    //printf("check after read = %d\n", check);
     if(check == -1){
       //perror("write");
       printf("\n");
@@ -146,32 +133,19 @@ myread (struct file_info *file_read,char* buffer, size_t count){
       file_read->bytes_read += count;
     }*/
   }
-  //if(file_read->buf_offset + count <= file_read->buf_size && file_read->buf_offset!=0){
-
-    printf("buf offset right before memcpy = %d\n",file_read->buf_offset);
+    //printf("buf offset right before memcpy = %d\n",file_read->buf_offset);
     //printf("------------in user buf in section 3 = %s \n", buffer);
-    printf("COUNT = %d \n", count);
-    printf("user_buf_offset %d \n", file_read->user_buf_offset);
-    memcpy(buffer + file_read->user_buf_offset,file_read->buf + file_read->buf_offset,count);
-    printf("User buf offset = %d\n",file_read->user_buf_offset);
-    file_read->user_buf_offset += count;
-    printf("in user buf in section 3 = %s \n", buffer);
-    file_read->buf_offset += count;
-    file_read->bytes_read += count;
-
-  //}
-  // read from our buffer memory and read x bytes from there
-  // put x bytes in the user buffer
-  //memcpy(buffer,file_read->buf + file_read->buf_offset,count);
-  //printf("buffer in read = %s \n", buffer);
-  //where in the buf should it read from
-  //file_read->buf_offset = check;
+    //printf("COUNT = %d \n", count);
+    //printf("user_buf_offset %d \n", file_read->user_buf_offset);
+  memcpy(buffer + file_read->user_buf_offset,file_read->buf + file_read->buf_offset,count);
+    //printf("User buf offset = %d\n",file_read->user_buf_offset);
+  file_read->user_buf_offset += count;
+    //printf("in user buf in section 3 = %s \n", buffer);
+  file_read->buf_offset += count;
+  file_read->bytes_read += count;
   file_read->file_offset += file_read->bytes_read;
-  //printf("This is the buf-offset = %d \n", file_read->buf_offset);
-  //overflow cases -> read from the remaining bytes in buf and then
-  //call read again for the next 4096
-  printf("\n");
 
+  //printf("\n");
   return file_read->bytes_read;
 }
 
@@ -268,6 +242,7 @@ main (int argc, char* argv[]){
       perror("open");
       exit(3);
   }
+<<<<<<< HEAD
   n = read(p->fileD, buffer, 20);
   //n = myread(p,buffer,20);
   printf("************************\n");
@@ -278,6 +253,8 @@ main (int argc, char* argv[]){
   printf("***********************\n");
   printf("\n");
   //n = read(p->fileD, buffer, 46);
+=======
+>>>>>>> 1911e02c09bae2a87f59fcdb6e2665040cd58352
 //  myseek(p,30,SEEK_SET);
   n = myread(p,buffer,25);
   printf("***********************\n");
@@ -298,7 +275,10 @@ main (int argc, char* argv[]){
 
   myclose(p);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1911e02c09bae2a87f59fcdb6e2665040cd58352
 
 /*
 int
@@ -331,8 +311,13 @@ main (int argc, char* argv[]){
 
   myclose(p);
 }
+<<<<<<< HEAD
 
 */
+=======
+*/
+
+>>>>>>> 1911e02c09bae2a87f59fcdb6e2665040cd58352
 /*
 int
 main(int argc, char* argv[]){
