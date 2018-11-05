@@ -256,7 +256,7 @@ myseek(struct file_info *file_seek, int offset, int whence){
   return file_seek->file_offset;
 }
 
-/*
+
 int
 main (int argc, char* argv[]){
   struct file_info *p;
@@ -268,10 +268,10 @@ main (int argc, char* argv[]){
       perror("open");
       exit(3);
   }
-  //n = read(p->fileD, buffer, 20);
-  /*n = myread(p,buffer,20);
+  n = read(p->fileD, buffer, 20);
+  //n = myread(p,buffer,20);
   printf("************************\n");
-  printf("my read output = %d \n",n);
+  printf("Read output = %d \n",n);
   printf("content in user buffer = %s\n", buffer);
   printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
   printf("Content in my buf = %s\n", p->buf);
@@ -280,7 +280,7 @@ main (int argc, char* argv[]){
   //n = read(p->fileD, buffer, 46);
 //  myseek(p,30,SEEK_SET);
   n = myread(p,buffer,25);
-  //printf("***********************\n");
+  printf("***********************\n");
   printf("my read output = %d \n",n);
   printf("content in user buffer = %s\n", buffer);
   printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
@@ -298,9 +298,9 @@ main (int argc, char* argv[]){
 
   myclose(p);
 }
-*/
 
 
+/*
 int
 main (int argc, char* argv[]){
   struct file_info *p;
@@ -332,7 +332,7 @@ main (int argc, char* argv[]){
   myclose(p);
 }
 
-
+*/
 /*
 int
 main(int argc, char* argv[]){
