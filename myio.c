@@ -242,7 +242,6 @@ main (int argc, char* argv[]){
       perror("open");
       exit(3);
   }
-<<<<<<< HEAD
   n = read(p->fileD, buffer, 20);
   //n = myread(p,buffer,20);
   printf("************************\n");
@@ -253,8 +252,6 @@ main (int argc, char* argv[]){
   printf("***********************\n");
   printf("\n");
   //n = read(p->fileD, buffer, 46);
-=======
->>>>>>> 1911e02c09bae2a87f59fcdb6e2665040cd58352
 //  myseek(p,30,SEEK_SET);
   n = myread(p,buffer,25);
   printf("***********************\n");
@@ -275,10 +272,6 @@ main (int argc, char* argv[]){
 
   myclose(p);
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 1911e02c09bae2a87f59fcdb6e2665040cd58352
 
 /*
 int
@@ -311,14 +304,7 @@ main (int argc, char* argv[]){
 
   myclose(p);
 }
-<<<<<<< HEAD
 
-*/
-=======
-*/
-
->>>>>>> 1911e02c09bae2a87f59fcdb6e2665040cd58352
-/*
 int
 main(int argc, char* argv[]){
   struct file_info *p;
