@@ -242,15 +242,6 @@ main (int argc, char* argv[]){
       perror("open");
       exit(3);
   }
-  n = read(p->fileD, buffer, 20);
-  //n = myread(p,buffer,20);
-  printf("************************\n");
-  printf("Read output = %d \n",n);
-  printf("content in user buffer = %s\n", buffer);
-  printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
-  printf("Content in my buf = %s\n", p->buf);
-  printf("***********************\n");
-  printf("\n");
   //n = read(p->fileD, buffer, 46);
 //  myseek(p,30,SEEK_SET);
   n = myread(p,buffer,25);
