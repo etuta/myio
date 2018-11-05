@@ -35,6 +35,7 @@ myopen(char* filePath, int flags){
   ptStruct->buf_offset = 0;
   ptStruct->bytes_read = 0;
   ptStruct->bytes_written = 0;
+
   //open file
   ptStruct->fileD = open(filePath,flags,0666);
   if(ptStruct->fileD == -1){
@@ -83,7 +84,7 @@ myread (struct file_info *file_read,char* buffer, size_t count){
     // content left in the buffer
     if(file_read->buf_offset > 0){
       int left = file_read->buf_size - file_read->buf_offset;
-      printf("left = =%d\n",left);
+      printf("left = %d\n",left);
       memcpy(buffer,file_read->buf + file_read->buf_offset,left);
       file_read->user_buf_offset += left;
       printf("Left content put in user content = %s\n", buffer);
@@ -91,8 +92,6 @@ myread (struct file_info *file_read,char* buffer, size_t count){
       file_read->bytes_read += left;
       file_read->buf_offset = 0;
     }
-    //printf("new count = %ld \n", count);
-    //printf(" our buffer pointer 2 = %p \n", file_read->buf);
     //Section 2
     while(count > file_read->buf_size){
         check = read(file_read->fileD,file_read->buf,file_read->buf_size);
@@ -150,14 +149,16 @@ myread (struct file_info *file_read,char* buffer, size_t count){
   //if(file_read->buf_offset + count <= file_read->buf_size && file_read->buf_offset!=0){
 
     printf("buf offset right before memcpy = %d\n",file_read->buf_offset);
-    printf("------------in user buf in section 3 = %s \n", buffer);
-      printf("COUNT = %d \n", count);
-    memcpy(buffer+file_read->user_buf_offset,file_read->buf + file_read->buf_offset,5);
+    //printf("------------in user buf in section 3 = %s \n", buffer);
+    printf("COUNT = %d \n", count);
+    printf("user_buf_offset %d \n", file_read->user_buf_offset);
+    memcpy(buffer + file_read->user_buf_offset,file_read->buf + file_read->buf_offset,count);
     printf("User buf offset = %d\n",file_read->user_buf_offset);
     file_read->user_buf_offset += count;
     printf("in user buf in section 3 = %s \n", buffer);
     file_read->buf_offset += count;
     file_read->bytes_read += count;
+
   //}
   // read from our buffer memory and read x bytes from there
   // put x bytes in the user buffer
@@ -170,6 +171,7 @@ myread (struct file_info *file_read,char* buffer, size_t count){
   //overflow cases -> read from the remaining bytes in buf and then
   //call read again for the next 4096
   printf("\n");
+
   return file_read->bytes_read;
 }
 
@@ -254,6 +256,7 @@ myseek(struct file_info *file_seek, int offset, int whence){
   return file_seek->file_offset;
 }
 
+/*
 int
 main (int argc, char* argv[]){
   struct file_info *p;
@@ -273,16 +276,18 @@ main (int argc, char* argv[]){
   printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
   printf("Content in my buf = %s\n", p->buf);
   printf("***********************\n");
-  printf("\n");*/
+  printf("\n");
   //n = read(p->fileD, buffer, 46);
 //  myseek(p,30,SEEK_SET);
   n = myread(p,buffer,25);
-  printf("***********************\n");
+  //printf("***********************\n");
   printf("my read output = %d \n",n);
   printf("content in user buffer = %s\n", buffer);
   printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
   printf("Content in my buf = %s\n", p->buf);
   printf("***********************\n");
+  printf("\n");
+
   n = myread(p,buffer,10);
   printf("***********************\n");
   printf("my read output = %d \n",n);
@@ -290,8 +295,44 @@ main (int argc, char* argv[]){
   printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
   printf("Content in my buf = %s\n", p->buf);
   printf("***********************\n");
+
   myclose(p);
 }
+*/
+
+
+int
+main (int argc, char* argv[]){
+  struct file_info *p;
+  int n;
+  char buffer[100];
+  char* filename = argv[1];
+  p = myopen(filename, O_RDONLY);
+  if(p->fileD < 0) {
+      perror("open");
+      exit(3);
+  }
+  n = read(p->fileD,buffer,25);
+  //printf("***********************\n");
+  printf("READ output = %d \n",n);
+  printf("content in user buffer = %s\n", buffer);
+  printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
+  printf("Content in my buf = %s\n", p->buf);
+  printf("***********************\n");
+  printf("\n");
+
+  n = read(p->fileD,buffer,10);
+  printf("***********************\n");
+  printf("READ output = %d \n",n);
+  printf("content in user buffer = %s\n", buffer);
+  printf("Bytes read = %d \n my buf_offset = %d \n",p->bytes_read,p->buf_offset);
+  printf("Content in my buf = %s\n", p->buf);
+  printf("***********************\n");
+
+  myclose(p);
+}
+
+
 /*
 int
 main(int argc, char* argv[]){
