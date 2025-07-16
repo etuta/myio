@@ -132,5 +132,5 @@ Content in my buf = Lorem ipsum dolor sit amet,
 
 ## Authors
 
-- Tenzin Dolma Gyalpo
 - Eliza-Teodora Tuta
+- Tenzin Dolma Gyalpo
